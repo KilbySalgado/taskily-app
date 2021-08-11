@@ -118,7 +118,7 @@ const addTask = (dispatch) => (idProject, userId, name, description, timestamp, 
 const delTask = (dispatch) => (idProject, userId, name, description, timestamp, finaldate) => {
   projectsRef
     .doc(idProject)
-    .update({
+    .delete({
       tasks: firebase.firestore.FieldValue.arrayUnion({
         userId,
         name,
@@ -169,7 +169,7 @@ export const { Provider, Context } = createDataContext(
     setCurrentProject,
     addTask,
     udpateTaskStatus,
-    delTask
+    delTask,
   },
   {
     errorMessage: null,

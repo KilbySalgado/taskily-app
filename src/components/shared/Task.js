@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import { Card, Caption, Text, Subheading, Switch } from "react-native-paper";
 import { format } from "date-fns";
 import { Context as ProjectContext } from "../../providers/ProjectContext";
 import theme from '../../theme'
 
-function Task({ name, description, done, timestamp }) {
+function Task({ Id, name, description, done, timestamp, finalDate }) {
   const { state, udpateTaskStatus } = useContext(ProjectContext);
 
   const setDone = (isDone) => {
@@ -14,7 +14,15 @@ function Task({ name, description, done, timestamp }) {
       description,
       done: !isDone,
       timestamp,
+      finalDate,
     });
+  };
+
+  const handledelTask = () => {
+    delTask(
+      state.currentProject.id,
+    );
+    setShowModal(false);
   };
 
   return (
@@ -33,6 +41,8 @@ function Task({ name, description, done, timestamp }) {
       <Caption style={styles.timestamp}>
         {format(timestamp, "eee H:mm")}
       </Caption>
+      {( finalDate < Date.now())? (<><Text style={{color:'red'}}>Finalizada</Text></>):(<><Text style={{color:'green'}}>Disponible</Text></>)
+      }
     </Card>
   );
 }

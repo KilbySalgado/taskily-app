@@ -17,12 +17,14 @@ function TaskList({ tasks }) {
         ListEmptyComponent={emptyFlatList}
         numColumns={1}
         keyExtractor={(item) => item.timestamp.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item, i }) => (
           <Task
+            Id={i}
             name={item.name}
             description={item.description}
             done={item.done}
             timestamp={item.timestamp}
+            finalDate={item.finalDate}
           />
         )}
       />
