@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { Button, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Card, Caption, Text, Subheading, Switch } from "react-native-paper";
 import { format } from "date-fns";
-import theme from "../../theme";
 import { Context as ProjectContext } from "../../providers/ProjectContext";
+import theme from '../../theme'
 
 function Task({ name, description, done, timestamp }) {
   const { state, udpateTaskStatus } = useContext(ProjectContext);
@@ -17,16 +17,6 @@ function Task({ name, description, done, timestamp }) {
     });
   };
 
-  const handleDelTask = () => {
-    delTask(
-      state.currentProject.id,
-      authState.user.id,
-      name,
-      description,
-      Date.now(),
-      date,
-    );
-
   return (
     <Card style={styles.container}>
       <Card.Content style={styles.content}>
@@ -39,7 +29,6 @@ function Task({ name, description, done, timestamp }) {
           <Subheading style={styles.name}>{name}</Subheading>
           <Text>{description}</Text>
         </View>
-          <Button onPress={(onPress={handledelTask})}>Delete</Button>
       </Card.Content>
       <Caption style={styles.timestamp}>
         {format(timestamp, "eee H:mm")}

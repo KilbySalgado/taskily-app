@@ -90,11 +90,12 @@ const setCurrentProject = (dispatch) => (project) => {
 };
 
 // Agregar una tarea a un proyecto
-const addTask = (dispatch) => (idProject, name, description, timestamp, finaldate) => {
+const addTask = (dispatch) => (idProject, userId, name, description, timestamp, finaldate) => {
   projectsRef
     .doc(idProject)
     .update({
       tasks: firebase.firestore.FieldValue.arrayUnion({
+        userId,
         name,
         description,
         timestamp,
@@ -114,11 +115,12 @@ const addTask = (dispatch) => (idProject, name, description, timestamp, finaldat
 };
 
 //Eliminar tarea
-const delTask = (dispatch) => (idProject, name, description, timestamp, finaldate) => {
+const delTask = (dispatch) => (idProject, userId, name, description, timestamp, finaldate) => {
   projectsRef
     .doc(idProject)
     .update({
       tasks: firebase.firestore.FieldValue.arrayUnion({
+        userId,
         name,
         description,
         timestamp,
@@ -129,7 +131,7 @@ const delTask = (dispatch) => (idProject, name, description, timestamp, finaldat
     .then(() => {
       dispatch({
         type: "addTask",
-        payload: { name, description, done: false, timestamp },
+        payload: { name, description, done: false, timestamp, finaldate },
       });
     })
     .catch((error) => {

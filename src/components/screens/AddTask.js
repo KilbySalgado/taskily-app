@@ -26,28 +26,8 @@ function AddTask({ navigation }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
-  };
-
-  const showTimepicker = () => {
-    showMode('time');
-  };
+  const [finalDate, setFinalDate] = useState('');
+ 
 
   const handleAddTask = () => {
     addTask(
@@ -56,7 +36,7 @@ function AddTask({ navigation }) {
       name,
       description,
       Date.now(),
-      date,
+      Date.parse(finalDate),
     );
     setShowModal(false);
   };
@@ -77,18 +57,12 @@ function AddTask({ navigation }) {
           style={styles.input}
         />
         <View>
-          <View>
-            <Button style={{backgroundColor: '#000', color:'#fff'}} onPress={showDatepicker}>Fecha de Finalizacion</Button>
-          </View>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              display="default"
-              onChange={onChange}
-            />
-          )}
+            <TextInput
+          placeholder="Fecha de Finalizacion"
+          value={finalDate}
+          onChangeText={setFinalDate}
+          style={styles.input}
+        />
         </View>
 
         <View style={styles.modalButtons}>
