@@ -16,6 +16,8 @@ import ProgressCircle from "react-native-progress-circle";
 import theme from "../../theme";
 import TaskList from "../shared/TaskList";
 import { getProjectTotalPercent } from "../../utils";
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 function AddTask({ navigation }) {
   const { state, addTask } = useContext(ProjectContext);
@@ -24,13 +26,37 @@ function AddTask({ navigation }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
+  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+
   const handleAddTask = () => {
     addTask(
       state.currentProject.id,
       authState.user.id,
       name,
       description,
-      Date.now()
+      Date.now(),
+      date,
     );
     setShowModal(false);
   };
@@ -50,6 +76,21 @@ function AddTask({ navigation }) {
           onChangeText={setDescription}
           style={styles.input}
         />
+        <View>
+          <View>
+            <Button style={{backgroundColor: '#000', color:'#fff'}} onPress={showDatepicker}>Fecha de Finalizacion</Button>
+          </View>
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              display="default"
+              onChange={onChange}
+            />
+          )}
+        </View>
+
         <View style={styles.modalButtons}>
           <Button onPress={() => setShowModal(false)}>Cancel</Button>
           <Button onPress={handleAddTask}>Save</Button>

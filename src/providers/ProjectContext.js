@@ -90,7 +90,7 @@ const setCurrentProject = (dispatch) => (project) => {
 };
 
 // Agregar una tarea a un proyecto
-const addTask = (dispatch) => (idProject, name, description, timestamp) => {
+const addTask = (dispatch) => (idProject, name, description, timestamp, finaldate) => {
   projectsRef
     .doc(idProject)
     .update({
@@ -99,6 +99,31 @@ const addTask = (dispatch) => (idProject, name, description, timestamp) => {
         description,
         timestamp,
         done: false,
+        finaldate,
+      }),
+    })
+    .then(() => {
+      dispatch({
+        type: "addTask",
+        payload: { name, description, done: false, timestamp, finaldate },
+      });
+    })
+    .catch((error) => {
+      dispatch({ type: "errorMessage", payload: error.message });
+    });
+};
+
+//Eliminar tarea
+const delTask = (dispatch) => (idProject, name, description, timestamp, finaldate) => {
+  projectsRef
+    .doc(idProject)
+    .update({
+      tasks: firebase.firestore.FieldValue.arrayUnion({
+        name,
+        description,
+        timestamp,
+        done: false,
+        finaldate,
       }),
     })
     .then(() => {
@@ -142,6 +167,7 @@ export const { Provider, Context } = createDataContext(
     setCurrentProject,
     addTask,
     udpateTaskStatus,
+    delTask
   },
   {
     errorMessage: null,
